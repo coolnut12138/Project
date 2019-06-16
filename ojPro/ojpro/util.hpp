@@ -66,7 +66,7 @@ inline std::ostream& Log(Level level, const std::string& file_name, int line_num
     prefix += "F";
    }
    //to_string 是将数字改为字符串
-   prefix += std::to_string(TimeUtile::TimeStamp());
+   prefix += std::to_string(TimeUtil::TimeStamp());
    prefix += " ";
    prefix += file_name;
    prefix += ":";
@@ -93,7 +93,7 @@ public:
     static bool Read(const std::string& file_path, std::string* content) {
 	content->clear();
 	std::ifstream file(file_path.c_str());	//ifstream 从文件读，ofstream 往文件写
-	if(!file.isopen()) {
+	if(!file.is_open()) {
 	    return false;
 	}
 
