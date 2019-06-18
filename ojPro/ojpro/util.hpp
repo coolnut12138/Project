@@ -1,11 +1,14 @@
 /*工具类*/
 #pragma once	    //这种防止头文件被包两次的做法好，因为那种#if__的编译很麻烦，而且头文件也不能有重复的。
+#include <cstdlib>
 #include <stdint.h>
 #include <string>
+#include <unordered_map>
+#include <vector>
 #include <iostream>
 #include <fstream>
 #include <sys/time.h>	//时间的头文件
-#include <cstdlib>
+#include <boost/algorithm/string.hpp>	//boost库
 
 
 ////////////////////////////////////////////////////////////////
@@ -116,3 +119,108 @@ public:
 	return true;
     }
 };  
+
+//字符串切分怎么搞？
+//1、strtok
+//2、stringstream
+//3、boost split 函数
+class StringUtil {
+public:
+    static void Split(const std::string& input, const std::string& spilt_char, std::vector<std::string>* output) {
+	//is_any_of 的意思就是分隔符允许存在多个，因为我们传的参数是字符串，当然分隔符就有多个,使用is_any_of就可以让字符串正确分割
+	//token_compress_off 的意思：关闭分隔符的压缩 ----- 比如一个字符串aaa bbb ccc 这样分出来就是三个，如果字符串是aaa  bbb ccc(a、b之间)
+	//有两个空格，那么如果使用token_compress_off,那么分割出来就会分割出四个部分，aaa、bbb、ccc、空串，如果使用token_compress_on那么就会
+	//压缩分隔符，就会将两个空格合并成一个，就会分割成三个部分没有空串
+	boost::split(*output, input, boost::is_any_of(spilt_char), boost::token_compress_on);
+    }
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// URL / body 解析模块 
+///////////////////////////////////////////////////////////////////////////////////////////////
+class UrlUtil {
+public:
+    static void ParseBody(const std::string& body, std::unordered_map<std::string, std::string>* params) {
+	//1、先对这里的 body 字符串进行切分，切分成键值对的形式
+	//  a)先按照 & 符号切分
+	//  b)再按照 = 切分
+	std::vector<std::string> kvs;
+	StringUtil::Split(body, "&", &kvs);
+	for(size_t i = 0; i < kvs.size(); ++i) {
+	    std::vector<std::string> kv;
+	    //kvs[i] 里面存的是一个键值对
+	    StringUtil::Split(kvs[i], "=", &kv);
+	    if(kv.size() != 2) {
+		continue;
+	    }
+	    //对于unordered_map []操作的行为：如果key不存在，就新增
+	    //如果key存在，就获取到对应的value
+	    //2、对这里的键值对进行 urldecode 
+	    (*params)[kv[0]] = UrlDecode(kv[1]);
+	}
+    }
+
+    //static std::string UrlDecode(const std::string& str) {
+    //    //解码使用现成的，网上查
+    //    }
+    static unsigned char ToHex(unsigned char x) 
+    { 
+	return  x > 9 ? x + 55 : x + 48; 
+    }
+
+    static unsigned char FromHex(unsigned char x) 
+    { 
+	unsigned char y;
+	if (x >= 'A' && x <= 'Z') y = x - 'A' + 10;
+	else if (x >= 'a' && x <= 'z') y = x - 'a' + 10;
+	else if (x >= '0' && x <= '9') y = x - '0';
+	else assert(0);
+	return y;
+    }
+
+    static std::string UrlEncode(const std::string& str)
+    {
+	std::string strTemp = "";
+	size_t length = str.length();
+	for (size_t i = 0; i < length; i++)
+	{
+	    if (isalnum((unsigned char)str[i]) || 
+		    (str[i] == '-') ||
+		    (str[i] == '_') || 
+		    (str[i] == '.') || 
+		    (str[i] == '~'))
+		strTemp += str[i];
+	    else if (str[i] == ' ')
+		strTemp += "+";
+	    else
+	    {
+		strTemp += '%';
+		strTemp += ToHex((unsigned char)str[i] >> 4);
+		strTemp += ToHex((unsigned char)str[i] % 16);
+	    }
+	}
+	return strTemp;
+    }
+
+    static std::string UrlDecode(const std::string& str)
+    {
+	std::string strTemp = "";
+	size_t length = str.length();
+	for (size_t i = 0; i < length; i++)
+	{
+	    if (str[i] == '+') strTemp += ' ';
+	    else if (str[i] == '%')
+	    {
+		assert(i + 2 < length);
+		unsigned char high = FromHex((unsigned char)str[++i]);
+		unsigned char low = FromHex((unsigned char)str[++i]);
+		strTemp += high*16 + low;
+	    }
+	    else strTemp += str[i];
+	}
+	return strTemp;
+    }
+};
+
+
+

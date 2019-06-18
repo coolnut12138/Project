@@ -1,0 +1,4 @@
+./temp_files/tmp_1560896043.4.cpp: In function ‘int main()’:
+./temp_files/tmp_1560896043.4.cpp:6:5: error: expected ‘,’ or ‘;’ before ‘printf’
+     printf("%\n", a+b);
+     ^
