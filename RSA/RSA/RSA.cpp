@@ -12,9 +12,58 @@ Key RSA::getKey()
 }
 
 void RSA::ecrept(const char* plain_file_in, const char* ecrept_file_out, long ekey, long pkey)
-{}
+{
+	std::ifstream fin(plain_file_in);
+	std::ofstream fout(ecrept_file_out, std::ofstream::app);
+	if (!fin.is_open()){
+		std::cout << "file open filed" << std::endl;
+		return;
+	}
+	const int NUM = 256;
+	char buf[NUM];
+	long buf_out[NUM];
+	int curNum;
+	//打开文件，按块读取，逐段加密
+	while (!fin.eof())
+	{
+		fin.read(buf, NUM);
+		curNum = fin.gcount();	//当前读取的字节数
+		for (int i = 0; i < curNum; i++){
+			buf_out[i] = ecrept((long)buf[i], ekey, pkey);
+		}
+		fout.write((char*)buf_out, curNum * sizeof(long));
+	}
+
+	fin.close();
+	fout.close();
+}
 void RSA::decrept(const char* ecrept_file_in, const char* plain_file_out, long dkey, long pkey)
-{}
+{
+	std::ifstream fin(ecrept_file_in);
+	std::ofstream fout(plain_file_out, std::ofstream::app);
+	if (!fin.is_open()){
+		std::cout << "file open filed" << std::endl;
+		return;
+	}
+	const int NUM = 256;
+	long buf[NUM];		//要解密的
+	char buf_out[NUM];	//输出
+	int curNum;
+	//打开文件，按块读取，逐段加密
+	while (!fin.eof())
+	{
+		fin.read((char*)buf, NUM * sizeof(long));
+		curNum = fin.gcount();	//当前读取的字节数
+		curNum /= sizeof(long);
+		for (int i = 0; i < curNum; i++){
+			buf_out[i] = (char)ecrept(buf[i], dkey, pkey);
+		}
+		fout.write(buf_out, curNum);
+	}
+
+	fin.close();
+	fout.close();
+}
 
 std::vector<long> RSA::Ecrept(std::string& str_in, long ekey, long pkey)
 {
@@ -28,7 +77,6 @@ std::string RSA::Decrept(std::vector<long>& ecrept_str, long dkey, long pkey)
 {
 	std::string msg_out;
 	for (const auto& e : ecrept_str){
-		//msg_out += (std::string)(ecrept(e, dkey, pkey));
 		msg_out.push_back((char)ecrept(e, dkey, pkey));
 	}
 	return msg_out;
@@ -72,9 +120,8 @@ bool RSA::is_prime(long prime)
 //模幂运算
 long RSA::ecrept(long msg, long key, long pkey)
 {
-	/*
 	long msg_out = 1;
-	long a = msg;
+	long a = msg;	// a:需要加密的信息  key: b  pkey: c
 	long b = key;
 	long c = pkey;
 	while(b){
@@ -85,21 +132,6 @@ long RSA::ecrept(long msg, long key, long pkey)
 		a = (a * a) % c;
 	}
 	return msg_out;
-	*/
-	long msg_des = 1;
-	//a:需要加密的信息
-	long a = msg;
-	//key: b pkey: c
-	long index = key;
-	//快速幂
-	while (index){
-		if (index & 1){
-			msg_des = (msg_des * a) % pkey;
-		}
-		index >>= 1;
-		a = (a * a) % pkey;
-	}
-	return msg_des;
 }
 
 //产生成员变量公钥和私钥
@@ -113,7 +145,7 @@ void RSA::produce_keys()
 	//公钥(e, n) 私钥(d, n)
 	_key.pkey = produce_pkey(prime1, prime2);	//n
 	long orla = produce_orla(prime1, prime2);	//f(n)
-	_key.ekey = produce_ekey(orla);		//e
+	_key.ekey = produce_ekey(orla);				//e
 	_key.dkey = produce_dkey(_key.ekey, orla);	//d
 }
 
@@ -137,7 +169,7 @@ long RSA::produce_ekey(long orla)
 	//选取e，在(1, f(n))--->[2, f(n)-1]中间选一个和f(n)互质的数，即找一个素数
 	while (1){
 		e = rand() % orla;
-		if (e > 1 && is_prime(e)){
+		if (e > 1 && produce_gcd(e, orla) == 1){
 			break;
 		}
 	}
@@ -150,7 +182,7 @@ long RSA::produce_dkey(long ekey, long orla)
 	//(dkey * ekey) % orla == 1
 	//优化：从 orla/ekey 开始找：(5 * x) % 20 == 1;	那么就从 4 开始找，比20大的开始找
 	long dkey = orla / ekey;
-	for (long dkey = orla / ekey;; dkey++){
+	for (;; dkey++){
 		if ((dkey * ekey) % orla == 1){
 			break;
 		}
@@ -158,3 +190,14 @@ long RSA::produce_dkey(long ekey, long orla)
 	return dkey;
 }
 
+long RSA::produce_gcd(long ekey, long orla)
+{
+	long a = ekey;
+	long b = orla;
+	int tmp;
+	while (tmp = a % b){
+		a = b;
+		b = tmp;
+	}
+	return b;
+}

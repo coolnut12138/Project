@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <time.h>
+#include <fstream>
 struct Key
 {
 	//¹«Ô¿(ekey, pkey): (e,n)
@@ -34,7 +35,7 @@ private:
 	long produce_pkey(long prime1, long prime2);
 	long produce_orla(long prime1, long prime2);
 	long produce_ekey(long orla);
-	//long produce_gcd(long ekey, long orla);
+	long produce_gcd(long ekey, long orla);
 	long produce_dkey(long ekey, long orla);
 
 private:
