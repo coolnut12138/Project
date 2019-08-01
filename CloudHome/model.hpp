@@ -36,8 +36,10 @@ class FileModel
 	    std::vector<std::string> normalFile;
 	    cutl.GetFileList(normalFile);
 	    for(size_t i = 0; i < normalFile.size(); i++){
+		bfs::path realpath(normalFile[i]);
+
 		FileInfo f;
-		f.filename = normalFile[i]; 
+		f.filename = realpath.filename().string();
 		f.url = SUB_DIR + f.filename;
 
 		_files.push_back(f);
@@ -49,7 +51,7 @@ class FileModel
 	    pthread_rwlock_rdlock(&_rwlock);
 	    files->clear();
 	    for(const auto& e : _files){
-		std::cerr << e.filename << std::endl;
+		//std::cerr << e.filename << std::endl;
 		files->push_back(e);
 	    }
 	    pthread_rwlock_unlock(&_rwlock);

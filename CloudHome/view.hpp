@@ -9,7 +9,7 @@ class View
 	static void RenderFiles(const std::vector<FileInfo>& all_files, std::string* html){
 	    ctemplate::TemplateDictionary dict("all_files");
 	    for(const auto& file : all_files) {
-		std::cout << file.filename << std::endl;
+		//std::cout << file.filename << std::endl;
 		ctemplate::TemplateDictionary* table_dict = dict.AddSectionDictionary("file");
 		table_dict->SetValue("filename", file.filename);
 		table_dict->SetValue("url", file.url);

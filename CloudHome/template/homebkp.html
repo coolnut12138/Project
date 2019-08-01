@@ -46,17 +46,17 @@
                 text-align: center;
                 font-size: 20px;
                 color:white;
+            }
+            /*设置第二张图片*/
+            #img2{
+                /*position: static;默认定位,可以省略*/
+                width: 550px;
+                height: 550px;
+                
             }  
-			#copy-right-grids {
-				position:absolute;
-				left:50%;
-				bottom:10000;
-				text-align :center;
-			}
         </style>
     </head>
     <body>
-	<div>
         <div id="div1">
             <span id="span1"> 这 里 有 你 之 前 存 放 的 文 件<br /></span>
 			<span id = "span2">欢迎回到你的云之家<br /></span>
@@ -66,12 +66,13 @@
         <div>  
             <h1><font color=pink>👇文件列表，点击即可下载👇</font></h1>
             {{#file}}          
-		    <a href="{{url}}"><font color=black><font size=5>{{filename}}</a></font></font></br>
+                <a href="{{url}}"><font color=black><font size=5>{{filename}}</a></font></font></br>         
             {{/file}}
+                
+        	<img src="img/abs.jpg" id = "img2" align="right"/>
         </div>
-		<div id="copy-right-grids">
-			<p class="footer-gd">Copyright &copy; 2019.云之家 - made by <a href="mailto:wg_wanggang@163.com" title="云之家" target="_blank">王港</a>👈Email</p>
-		</div>
-		</div>
+	<div class="copy-right-grids">
+	<p class="footer-gd">Copyright &copy; 2019.云之家 - made by <a href="mailto:wg_wanggang@163.com" title="云之家" target="_blank">王港</a>👈Email</p>
+	</div>
     </body>
 </html>
