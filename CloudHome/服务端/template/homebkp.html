@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <style type="text/css">
+            /*div1下面 包含着1个图片和1段文字*/
+            #div1{
+                position: relative;/*相对定位*/
+                width: 1530px;
+                height: 650px;
+            }
+            /*图片部分的设置*/
+            #img1{
+                /*position: static;默认定位,可以省略*/
+                width: 100%;
+                height: 100%;
+            }
+            /*文字的设置*/
+            #span1{
+                position: absolute;/*绝对定位*/
+                width: 100%;
+                bottom: 350px;/*离底下0像素*/
+                left: 0px;/*离左边0像素*/
+                text-align: center;
+                font-size: 15px;
+                color:white;
+            }
+            /*文字二*/
+            #span2{
+                position: absolute;/*绝对定位*/
+                width: 100%;
+                bottom: 300px;
+                left: 0px;/*离左边0像素*/
+                text-align: center;
+                font-size: 40px;
+                font-style: inherit;
+                color:chocolate;
+            }
+            /*文字三*/
+            #span3{
+                position: absolute;/*绝对定位*/
+                width: 100%;
+                bottom: 250px;/*离底下0像素*/
+                left: 0px;/*离左边0像素*/
+                text-align: center;
+                font-size: 20px;
+                color:white;
+            }
+            /*设置第二张图片*/
+            #img2{
+                /*position: static;默认定位,可以省略*/
+                width: 550px;
+                height: 550px;
+                
+            }  
+        </style>
+    </head>
+    <body>
+        <div id="div1">
+            <span id="span1"> 这 里 有 你 之 前 存 放 的 文 件<br /></span>
+			<span id = "span2">欢迎回到你的云之家<br /></span>
+			<span id = "span3">往下翻查看你存放的文件</span>
+            <img src="img/4.jpg"  id="img1" />
+        </div>
+        <div>  
+            <h1><font color=pink>👇文件列表，点击即可下载👇</font></h1>
+            {{#file}}          
+                <a href="{{url}}"><font color=black><font size=5>{{filename}}</a></font></font></br>         
+            {{/file}}
+                
+        	<img src="img/abs.jpg" id = "img2" align="right"/>
+        </div>
+	<div class="copy-right-grids">
+	<p class="footer-gd">Copyright &copy; 2019.云之家 - made by <a href="mailto:wg_wanggang@163.com" title="云之家" target="_blank">王港</a>👈Email</p>
+	</div>
+    </body>
+</html>
