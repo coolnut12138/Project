@@ -121,6 +121,11 @@ class CompressUtil
 	//2、判断是否需要压缩
 	//3、需要压缩则压缩，不需要则不压缩
 	bool TraveDirAndCompressFiles() {
+	    //将Windows下的gbk格式转为utf-8
+	    std::string cmd = "bash gbk2utf-8";
+	    FILE* fd = popen(cmd.c_str(), "r");
+	    pclose(fd);
+
 	    bfs::directory_iterator files_begin(NORMALFILE_PATH);
 	    bfs::directory_iterator files_end;
 	    while(files_begin != files_end){

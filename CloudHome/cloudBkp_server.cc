@@ -9,7 +9,7 @@ int main()
 {
     std::thread thread(thr_start);
     thread.detach();
-    cloudBackupSer cbps;
+    cloudBackupSer cbps("./cert.pem", "./key.pem");
     cbps.Run();
     return 0;
 }

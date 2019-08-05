@@ -1,6 +1,8 @@
 #pragma once
 #include <fstream>
 #include <boost/filesystem.hpp>
+//使用httplib库中的SSL加密
+#define CPPHTTPLIB_OPENSSL_SUPPORT
 #include "httplib.h"
 #include "view.hpp"
 #include "compressTool.hpp"
@@ -19,9 +21,10 @@ namespace bfs = boost::filesystem;
 class cloudBackupSer
 {
     private:
-	htp::Server server;
+	htp::SSLServer server;
     public:
-	cloudBackupSer()
+	cloudBackupSer(const char *cert, const char *dkey)
+	    :server(cert, dkey)
 	{
 	    Init();
 	    server.set_base_dir(BASE_DIR);

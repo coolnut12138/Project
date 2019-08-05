@@ -1,0 +1,1 @@
+convmv -f gbk -t utf8 -r --notest ./wwwroot/backup >>/dev/null 2>&1
