@@ -8,10 +8,12 @@
 #include <unordered_map>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>	//使用其中的split
+#define CPPHTTPLIB_OPENSSL_SUPPORT
 #include "httplib.h"
 
-#define CLIENT_BACKUP_DIR "backup"
+#define CLIENT_BACKUP_DIR		"backup"
 #define CLIENT_BACKUP_INFO_FINE "back.list"
+#define CERT					"cert.pem"
 //10 << 20 = 10M
 #define RANGE_MAX_SIZE (10 << 20)
 #define SERVER_IP "192.168.160.150"
@@ -67,7 +69,9 @@ public:
 		//PUT /list/filename HTTP/1.1
 		std::string url = BACKUP_URI + name.filename().string();
 		//实例化一个httplib的客户端对象
-		httplib::Client cli(SERVER_IP, SERVER_PORT);
+		httplib::SSLClient cli(SERVER_IP, SERVER_PORT);
+		cli.set_ca_cert_path(CERT);
+		cli.enable_server_certificate_verification(true);
 		//定义http请求头信息
 		httplib::Headers hdr;
 		hdr.insert(std::make_pair("Content-Length", std::to_string(_range_len)));
