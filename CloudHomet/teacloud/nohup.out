@@ -1,0 +1,14 @@
+file:[www/list/backup.png] store success
+open gzip www/zip/backup.png.gzfailed
+file:[www/list/backup.png] store success
+hello wg
+file:[www/list/back.list] store success
+hello wg
+file:[www/list/CloudBackup.pdb] store success
+hello wg
+file:[www/list/CentOS-7-x86_64-DVD-1611.iso] store success
+file:[www/list/CentOS-7-x86_64-DVD-1611.iso] store success
+open gzip www/zip/CentOS-7-x86_64-DVD-1611.iso.gzfailed
+file:[www/list/CentOS-7-x86_64-DVD-1611.iso] store success
+file:[www/list/CentOS-7-x86_64-DVD-1611.iso] store success
+file:[www/list/CentOS-7-x86_64-DVD-1611.iso] store success
