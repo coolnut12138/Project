@@ -1,0 +1,2 @@
+/usr/bin/ar cr libmyleptjson.a  CMakeFiles/myleptjson.dir/myleptjson.c.o
+/usr/bin/ranlib libmyleptjson.a

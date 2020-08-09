@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/wg/GitHub/Project/myjsonProj/build",
+  "command": "/usr/bin/gcc    -ansi -pedantic -Wall -g   -o CMakeFiles/myleptjson.dir/myleptjson.c.o   -c /home/wg/GitHub/Project/myjsonProj/myleptjson.c",
+  "file": "/home/wg/GitHub/Project/myjsonProj/myleptjson.c"
+},
+{
+  "directory": "/home/wg/GitHub/Project/myjsonProj/build",
+  "command": "/usr/bin/gcc    -ansi -pedantic -Wall -g   -o CMakeFiles/myleptjson_test.dir/test.c.o   -c /home/wg/GitHub/Project/myjsonProj/test.c",
+  "file": "/home/wg/GitHub/Project/myjsonProj/test.c"
+}
+]

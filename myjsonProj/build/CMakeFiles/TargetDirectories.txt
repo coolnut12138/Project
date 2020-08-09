@@ -1,0 +1,2 @@
+/home/wg/GitHub/Project/myjsonProj/build/CMakeFiles/myleptjson.dir
+/home/wg/GitHub/Project/myjsonProj/build/CMakeFiles/myleptjson_test.dir
