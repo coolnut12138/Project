@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/wg/GitHub/Project/myjsonProj/myleptjson.c
+myleptjson.h
+/home/wg/GitHub/Project/myjsonProj/myleptjson.h
+assert.h
+-
+stdlib.h
+-
+
+/home/wg/GitHub/Project/myjsonProj/myleptjson.h
+
